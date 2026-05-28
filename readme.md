@@ -1,68 +1,107 @@
-# Projeto 1 IA - Busca
+# Projeto 1 — Algoritmos de Busca em Grafos
 
-Este projeto implementa algoritmos de busca em grafos para encontrar caminhos no mapa do jogo Super Mario World, utilizando os algoritmos **A* (A-Estrela)** e **Busca em Profundidade (DFS)**. 
+**Disciplina:** Inteligência Artificial | **Curso:** Ciência da Computação — UNIOESTE 2026
 
----
-
-## 🛠️ Requisitos e Bibliotecas
-
-**não é necessário instalar nenhuma biblioteca de terceiros (externa) via `pip`!** 
-
-O projeto foi desenvolvido inteiramente utilizando a **Biblioteca Padrão do Python (Python Standard Library)**.
-
-### Módulos Nativos Utilizados:
-*   `sys`: Usado para manipulação do sistema e encerramento do programa.
-*   `heapq`: Usado para a estrutura de Min-Heap (Fila de Prioridade) eficiente exigida pelo algoritmo A*.
-
-### Requisito do Sistema:
-*   **Python 3.6** ou superior instalado.
+Implementação de algoritmos de busca aplicados ao mapa do jogo *Super Mario World*, encontrando o caminho entre dois pontos do mapa.
 
 ---
 
-## 🚀 Como Executar o Projeto
+## Requisitos
 
-1. Abra o terminal na pasta do projeto:
-   ```bash
-   cd "/Users/gustavoneves/Desktop/Faculdade/4 ano/IA/Projeto 1"
-   ```
-
-2. Execute o arquivo `main.py` utilizando o interpretador do Python 3:
-   ```bash
-   python3 main.py
-   ```
-
-3. No menu interativo, escolha a opção desejada:
-   *   **1:** Para carregar um arquivo de mapa (ex: `teste.txt`).
-   *   **2:** Para executar a busca utilizando o algoritmo **A***.
-   *   **3:** Para executar a **Busca em Profundidade**.
-   *   **4:** Para sair.
+- Python **3.6+**
+- Nenhuma biblioteca externa — apenas módulos da biblioteca padrão (`heapq`, `re`, `csv`)
 
 ---
 
-## 📂 Formato do Arquivo de Entrada (Grafo)
+## Como executar
 
-O programa lê a estrutura do mapa a partir de arquivos de texto (como o `teste.txt` incluso). O arquivo deve seguir a seguinte estrutura:
+```bash
+python main.py
+```
 
-*   **Ponto Inicial:** `ponto_inicial(no_origem).`
-*   **Ponto Final:** `ponto_final(no_destino).`
-*   **Orientação:** `orientado(s).` (sim) ou `orientado(n).` (não)
-*   **Arestas/Conexões:** `pode_ir(origem, destino, custo).`
-*   **Heurísticas (distância em linha reta até o objetivo):** `h(no, destino, valor_h).`
-
-> 💡 **Nota:** Linhas que começam com `%` são tratadas como comentários e ignoradas pelo interpretador do programa.
+O programa inicia um menu interativo no terminal.
 
 ---
 
-## 🧠 Algoritmos Implementados
+## Menu
 
-### 1. Algoritmo A* (A-Estrela)
-*   Busca informada que utiliza a função de avaliação:  
-    $$f(n) = g(n) + h(n)$$  
-    Onde $g(n)$ é o custo real acumulado da origem até o nó $n$, e $h(n)$ é a estimativa heurística (distância em linha reta) do nó $n$ até o objetivo final.
-*   Garante encontrar o caminho de custo mínimo caso a heurística seja admissível.
-*   Exibe o passo a passo de cada iteração, o estado da fronteira de busca, o caminho percorrido e a medida de desempenho (nós expandidos).
+```
+1. Carregar arquivo de entrada
+2. Executar algoritmo no arquivo carregado
+3. Executar em lote (pasta de arquivos)
+4. Exibir sumário dos resultados
+5. Salvar resultados em CSV
+6. Sair
+```
 
-### 2. Busca em Profundidade (DFS - Depth-First Search)
-*   Busca não informada que explora sistematicamente os caminhos mais profundos primeiro.
-*   Possui detecção interna de loops para evitar ciclos infinitos no grafo.
-*   Exibe o caminho encontrado e os nós expandidos durante a execução.
+**Opção 2 — Executar algoritmo:** após carregar um arquivo, escolha entre:
+- `1` A* (Melhor Solução)
+- `2` Busca em Profundidade com Backtracking (Pior Solução)
+- `3` A* com Limite de Distância *(Bônus)*
+
+**Opção 3 — Lote:** informe uma pasta; o programa processa todos os `.txt` encontrados, pergunta quais algoritmos rodar e gera os resultados prontos para exportar.
+
+---
+
+## Formato do arquivo de entrada
+
+```prolog
+ponto_inicial(a0).
+ponto_final(f0).
+orientado(s).          % s = orientado | n = não-orientado
+
+pode_ir(a0,b0,95).     % aresta de a0 para b0 com custo 95
+pode_ir(a0,c0,44).
+
+h(a0,f0,58).           % heurística: distância em linha reta de a0 até f0
+h(c0,f0,34).
+```
+
+> Linhas com `%` são comentários e são ignoradas.  
+> O parser aceita **maiúsculas, minúsculas e espaços** em qualquer combinação — `PODE_IR( A0 , B0 , 95 ).` é válido.
+
+---
+
+## Algoritmos
+
+| Algoritmo | Estrutura | Heurística | Garante ótimo? |
+|---|---|---|---|
+| **A\*** | Fila de prioridade | `f(n) = g(n) + h(n)` | Sim |
+| **DFS com Backtracking** | Pilha (LIFO) | Não usa (`h = 0`) | Não |
+| **A\* com Limite** *(bônus)* | Fila de prioridade | `f(n) = g(n) + h(n)` | Sim, dentro do limite |
+
+**Medida de desempenho adotada:** número de nós expandidos — quanto menor, melhor.
+
+O DFS explora em profundidade sem heurística e pode encontrar caminhos subótimos; o A* usa a distância em linha reta como estimativa e sempre encontra o menor custo.
+
+A cada iteração o programa exibe o estado atual da estrutura de controle:
+
+```
+Iteração 2:
+Fila de Prioridade: (c0: 44 + 34 = 78) (b0: 95 + 24 = 119) (d0: 98 + 37 = 135)
+Nós expandidos: 2
+```
+
+---
+
+## Saída CSV
+
+Ao salvar (opção 5), é gerado um `.csv` com as colunas:
+
+| arquivo | algoritmo | ponto_inicial | ponto_final | solucao_encontrada | custo | caminho | nos_expandidos | iteracoes | tempo_ms |
+|---|---|---|---|---|---|---|---|---|---|
+
+Executar em lote sobre uma pasta e salvar produz uma tabela comparativa direta entre os algoritmos.
+
+---
+
+## Estrutura de arquivos
+
+```
+IA-Projeto1/
+├── algoritmos.py      # Parser + classes AEstrela, BuscaProfundidadeBacktracking, AEstrelaComLimite
+├── main.py            # Menu interativo e runner de experimentos
+├── teste.txt          # Exemplo do enunciado
+├── teste2.txt         # Grafo não-orientado
+└── exemplos/          # Pasta com casos de teste adicionais
+```

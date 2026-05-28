@@ -1,0 +1,12 @@
+arquivo,algoritmo,ponto_inicial,ponto_final,solucao_encontrada,custo,caminho,nos_expandidos,iteracoes,tempo_ms
+teste_casos.txt,A*,a0,f0,True,49,a0 – c0 – f0,4,3,0.039
+teste.txt,Busca em Profundidade com Backtracking,a0,f0,True,160,a0 – b0 – c0 – f0,4,3,0.039
+exemplo1_orientado.txt,A*,a0,f0,True,49,a0 – c0 – f0,4,3,0.041
+exemplo1_orientado.txt,Busca em Profundidade com Backtracking,a0,f0,True,160,a0 – b0 – c0 – f0,4,3,0.022
+exemplo1_orientado.txt,A* com Limite de Distância (limite=100),a0,f0,True,49,a0 – c0 – f0,4,3,0.036
+exemplo2_nao_orientado.txt,A*,a0,e0,True,6,a0 – c0 – d0 – e0,4,3,0.022
+exemplo2_nao_orientado.txt,Busca em Profundidade com Backtracking,a0,e0,True,20,a0 – b0 – d0 – c0 – e0,5,4,0.015
+exemplo2_nao_orientado.txt,A* com Limite de Distância (limite=100),a0,e0,True,6,a0 – c0 – d0 – e0,4,3,0.018
+exemplo3_backtrack.txt,A*,a0,g0,True,11,a0 – c0 – g0,7,6,0.029
+exemplo3_backtrack.txt,Busca em Profundidade com Backtracking,a0,g0,True,103,a0 – b0 – d0 – f0 – g0,5,4,0.013
+exemplo3_backtrack.txt,A* com Limite de Distância (limite=100),a0,g0,True,11,a0 – c0 – g0,7,6,0.026
