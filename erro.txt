@@ -1,0 +1,21 @@
+% ==========================================
+% TESTE 4: SEM SOLUCAO (DESTINO INALCANCAVEL)
+% ==========================================
+ponto_inicial(a0).
+ponto_final(f0).
+orientado(s).
+
+% A Ilha Inicial
+pode_ir(a0,b0,10).
+pode_ir(a0,c0,10).
+pode_ir(b0,d0,10).
+pode_ir(c0,d0,10).
+
+% O destino f0 existe, mas NENHUM caminho leva ate ele!
+
+% Heuristicas
+h(a0,f0,90).
+h(b0,f0,80).
+h(c0,f0,80).
+h(d0,f0,70).
+h(f0,f0,0).

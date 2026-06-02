@@ -1,0 +1,20 @@
+% ==========================================
+% TESTE 1: INEFICIENCIA DA DFS
+% ==========================================
+ponto_inicial(a0).
+ponto_final(f0).
+orientado(s).
+
+% O caminho terrivelmente caro (que a DFS vai escolher)
+pode_ir(a0,b0,100).
+pode_ir(b0,f0,150).
+
+% O caminho ótimo e barato (que a DFS vai ignorar)
+pode_ir(a0,c0,10).
+pode_ir(c0,f0,15).
+
+% Heuristicas (Para o A* poder rodar este mapa)
+h(a0,f0,20).
+h(b0,f0,140).
+h(c0,f0,10).
+h(f0,f0,0).

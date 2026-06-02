@@ -1,0 +1,26 @@
+% ==========================================
+% TESTE 2: O GRANDE BACKTRACKING
+% ==========================================
+ponto_inicial(a0).
+ponto_final(f0).
+orientado(s).
+
+% O Beco sem saida profundo
+pode_ir(a0,b0,10).
+pode_ir(b0,d0,10).
+pode_ir(d0,e0,10).
+pode_ir(e0,z0,10).
+% z0 nao tem vizinhos! Fim da linha.
+
+% O caminho da salvacao que ficou guardado
+pode_ir(a0,c0,20).
+pode_ir(c0,f0,20).
+
+% Heuristicas
+h(a0,f0,35).
+h(b0,f0,50).
+h(c0,f0,15).
+h(d0,f0,60).
+h(e0,f0,70).
+h(z0,f0,99).
+h(f0,f0,0).

@@ -1,0 +1,24 @@
+% ==========================================
+% TESTE 3: PREVENCAO DE CICLOS (LOOPS)
+% ==========================================
+ponto_inicial(a0).
+ponto_final(f0).
+orientado(s).
+
+pode_ir(a0,b0,10).
+
+% O Ciclo Vicioso (Loop)
+pode_ir(b0,c0,5).
+pode_ir(c0,b0,5).
+pode_ir(c0,d0,10).
+pode_ir(d0,c0,10).
+
+% A saida do loop
+pode_ir(d0,f0,15).
+
+% Heuristicas
+h(a0,f0,40).
+h(b0,f0,30).
+h(c0,f0,25).
+h(d0,f0,10).
+h(f0,f0,0).

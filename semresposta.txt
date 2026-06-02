@@ -1,0 +1,16 @@
+ponto_inicial(a0). 
+ponto_final(f0). 
+orientado(s). 
+% Um continente isolado
+pode_ir(a0,b0,10). 
+pode_ir(a0,c0,20). 
+pode_ir(b0,c0,5).
+pode_ir(c0,e0,15).
+pode_ir(e0,b0,8). 
+% Repare que NINGUÉM tem um "pode_ir" para f0!
+% Heurísticas 
+h(a0,f0,50).
+h(b0,f0,45).
+h(c0,f0,35).
+h(e0,f0,20).
+h(f0,f0,0).

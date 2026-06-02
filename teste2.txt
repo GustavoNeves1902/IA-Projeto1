@@ -1,0 +1,13 @@
+ponto_inicial(a0). % Ponto inicial da busca
+ponto_final(f0). % Ponto final da busca
+orientado(s). % Indica que as direções são orientadas
+%orientado(n). % Indica que as direções são não orientadas
+pode_ir(a0,b0,95). % Existe uma ligação entre a0 e b0 % O custo para chegar em b0 partindo de a0 é 95
+pode_ir(a0,c0,44). % Caso não orientado, o custo para a0 partindo de c0 é 44
+pode_ir(b0,c0,60). 
+pode_ir(b0,f0,44).
+pode_ir(c0,f0,5).
+h(a0,f0,58). % A distância em linha reta de a0 até f0 é 58
+h(b0,f0,24).
+h(c0,f0,34).
+h(f0,f0,0).

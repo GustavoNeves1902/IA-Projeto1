@@ -1,0 +1,13 @@
+ponto_inicial(a0). 
+ponto_final(e0). 
+orientado(s).  
+pode_ir(a0,b0,30). 
+pode_ir(a0,c0,15). 
+pode_ir(b0,d0,10). 
+pode_ir(c0,d0,10),
+pode_ir(c0,e0,20).
+pode_ir(d0,f0,10).
+h(a0,f0,58). 
+h(b0,f0,24).
+h(c0,f0,34).
+h(f0,f0,0).

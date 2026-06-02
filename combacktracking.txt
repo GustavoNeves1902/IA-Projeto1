@@ -1,0 +1,13 @@
+ponto_inicial(a0). 
+ponto_final(f0). 
+orientado(s). 
+pode_ir(a0,b0,10). 
+pode_ir(b0,d0,15). 
+pode_ir(a0,c0,20). 
+pode_ir(c0,f0,30). 
+% Heurísticas (Valores ilustrativos para não quebrar o A*)
+h(a0,f0,40).
+h(b0,f0,50).
+h(c0,f0,25).
+h(d0,f0,99).
+h(f0,f0,0).
