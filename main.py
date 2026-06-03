@@ -1,14 +1,30 @@
 import sys
 import heapq
+import csv
+import os
 
 grafo = {}
 heuristicas = {}
 ponto_inicial = None
 ponto_final = None
 orientado = False
+nome_arquivo_atual = "vazio"
+
+def salvar_resultados(algoritmo, iteracoes, expandidos, gerados):
+    global nome_arquivo_atual
+    nome_csv = "resultados.csv"
+    arquivo_existe = os.path.isfile(nome_csv)
+
+    with open(nome_csv, mode='a', newline='', encoding='utf-8') as arquivo:
+        escritor = csv.writer(arquivo,delimiter=';')
+
+        if not arquivo_existe:
+            escritor.writerow(['Arquito .TXT', 'Algoritmo', 'Iterações', 'Nós Expandidos', 'Nós Gerados'])
+
+        escritor.writerow([nome_arquivo_atual,algoritmo,iteracoes,expandidos,gerados])
 
 def carregar_arquivo():
-    global grafo, heuristicas, ponto_inicial, ponto_final, orientado
+    global grafo, heuristicas, ponto_inicial, ponto_final, orientado,nome_arquivo_atual
     grafo = {}
     heuristicas = {}
 
@@ -18,6 +34,8 @@ def carregar_arquivo():
     try:
         with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
             linhas = arquivo.readlines() #lê as linhas e guarda em uma lista
+
+            nome_arquivo_atual = nome_arquivo
             
             for linha in linhas:
                 #strip() remove os espaços em branco do início e do fim de uma string.
@@ -99,13 +117,15 @@ def executar_a_estrela():
         print(f"Medida de desempenho: {nos_expandidos}")
 
         f_atual, _, atual, g_atual, caminho = heapq.heappop(fronteira)
-        nos_expandidos += 1
+        
 
         if atual == ponto_final:
             sucesso = True
             break
+
         
         vizinhos = grafo.get(atual, {})
+        nos_expandidos += 1
 
         for vizinho, custo_aresta in vizinhos.items():
             novo_g = g_atual + custo_aresta
@@ -129,13 +149,16 @@ def executar_a_estrela():
     if sucesso:
         print(f"Distância: {g_atual}")
         print(f"Caminho: {' - '.join(caminho)}")
+        print(f"Quantidade de iterações: {iteracao}")
         print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
         print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
     else:
         print("Distância: Incompleta")
         print("Caminho: Nenhum caminho válido encontrado até o destino.")
+        print(f"Quantidade de iterações: {iteracao}")
         print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
         print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+    salvar_resultados('A_estrela',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
     
 
@@ -199,13 +222,16 @@ def executar_busca_profundidade_backtracking():
     if sucesso:
         print(f"Distância: {distancia_final}")
         print(f"Caminho: {' - '.join(caminho_final)}")
+        print(f"Quantidade de iterações: {iteracao}")
         print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
         print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
     else:
         print("Distância: Incompleta")
         print("Caminho: Nenhum caminho válido encontrado até ao destino.")
+        print(f"Quantidade de iterações: {iteracao}")
         print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
         print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+    salvar_resultados('DFS-backtracking',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
 
         
