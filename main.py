@@ -234,6 +234,97 @@ def executar_busca_profundidade_backtracking():
     salvar_resultados('DFS-backtracking',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
 
+
+def executar_a_estrela_limitado():
+    global grafo, heuristicas, ponto_inicial,ponto_final, nome_arquivo_atual
+
+    if not ponto_inicial or not ponto_final:
+        print("\nErro! Carregue um arquivo antes de executar o algoritmo.")
+        return
+    print("\n--- Executando A* Limitado---")
+
+    try:
+        limite = int(input("Digite a distância máxima viável (ex: 150): "))
+    except ValueError:
+        print("\nValor inválido! Por favor, digite um número inteiro.")
+        return
+
+    fronteira = []
+    id = 0
+    g_inicial = 0
+    nos_gerados = 1
+    h_inicial = heuristicas.get(ponto_inicial,0)
+    f_inicial = g_inicial + h_inicial
+
+    if f_inicial > limite:
+        print(f"\nImpossível! A distância mínima estimada até o destino ({f_inicial}) já ultrapassa o seu limite ({limite}).")
+        return
+    
+    caminho_inicial = [ponto_inicial]
+    heapq.heappush(fronteira, (f_inicial, id, ponto_inicial, g_inicial,caminho_inicial))
+    
+    melhor_g = {ponto_inicial: g_inicial}
+    iteracao = 1
+    nos_expandidos = 0
+    sucesso = False
+
+    while fronteira:
+        itens_lista = [f"({no}: {g}+{heuristicas.get(no, 0)}={f})" for f, _, no,g, _ in sorted(fronteira)]
+        str_lista = " ".join(itens_lista)
+
+        print(f"\nIteração {iteracao}:")
+        print(f"Lista: {str_lista}")
+        print(f"Medida de desempenho: {nos_expandidos}")
+
+        f_atual, _, atual, g_atual, caminho = heapq.heappop(fronteira)
+        
+
+        if atual == ponto_final:
+            sucesso = True
+            break
+
+        
+        vizinhos = grafo.get(atual, {})
+        nos_expandidos += 1
+
+        for vizinho, custo_aresta in vizinhos.items():
+            novo_g = g_atual + custo_aresta
+            f_vizinho = novo_g + heuristicas.get(vizinho, 0)
+
+            if f_vizinho > limite:
+                continue
+
+            if vizinho not in melhor_g or novo_g < melhor_g[vizinho]:
+                melhor_g[vizinho] = novo_g
+
+                novo_caminho = list(caminho)
+                novo_caminho.append(vizinho)
+
+                id+=1
+                heapq.heappush(fronteira, (f_vizinho, id,vizinho, novo_g, novo_caminho))
+                nos_gerados += 1
+
+        iteracao += 1
+    
+
+    print("\n" + "="*30)
+    print("Fim da execução")
+    if sucesso:
+        print(f"Distância: {g_atual}")
+        print(f"Caminho: {' - '.join(caminho)}")
+        print(f"Quantidade de iterações: {iteracao}")
+        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
+        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+    else:
+        print("Distância: Incompleta")
+        print("Caminho: Nenhum caminho válido encontrado até o destino.")
+        print(f"Quantidade de iterações: {iteracao}")
+        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
+        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+    salvar_resultados('A_estrela_limitado',iteracao, nos_expandidos, nos_gerados)
+    print("="*30)
+
+
         
 
 def exibir_menu():
@@ -242,9 +333,10 @@ def exibir_menu():
         print(" PROJETO 1 IA - SUPER MARIO WORLD")
         print("="*40)
         print("1. Carregar arquivo")
-        print("2. Executar A*")
-        print("3. Executar Busca em Profundidade com backtracking")
-        print("4. Sair")
+        print("2. Executar Busca em Profundidade com backtracking")
+        print("3. Executar A*")
+        print("4. BÔNUS - Executar A* Limitado")
+        print("5. Sair")
         print("="*40)
         
         opcao = input("Escolha uma opção: ")
@@ -252,14 +344,16 @@ def exibir_menu():
         if opcao == '1':
             carregar_arquivo()
         elif opcao == '2':
-            executar_a_estrela()
-        elif opcao == '3':
             executar_busca_profundidade_backtracking()
+        elif opcao == '3':
+            executar_a_estrela()
         elif opcao == '4':
+            executar_a_estrela_limitado()
+        elif opcao == '5':
             print("\nEncerrando o programa. Até logo!")
             sys.exit()
         else:
-            print("\nOpção inválida! Digite um número de 1 a 4.")
+            print("\nOpção inválida! Digite um número de 1 a 5.")
 
 if __name__ == "__main__":
     exibir_menu()
