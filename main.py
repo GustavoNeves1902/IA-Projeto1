@@ -210,8 +210,9 @@ def executar_busca_profundidade_backtracking():
         str_lista = " ".join(itens_lista)
 
         print(f"\nIteração {iteracao}")
-        print(f"Lista: {str_lista}")
-        print(f"Medida de desempenho: {nos_expandidos}")
+        print(f"Pilha: {str_lista}")
+        print(f"Nós expandidos: {nos_expandidos}")
+        print(f"Nós gerados: {nos_gerados}")
 
         atual, distancia, caminho = fronteira.pop()
         
@@ -251,10 +252,8 @@ def executar_busca_profundidade_backtracking():
         print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
     else:
         print("Distância: Incompleta")
-        print("Caminho: Nenhum caminho válido encontrado até ao destino.")
-        print(f"Quantidade de iterações: {iteracao}")
-        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
-        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+        print("Nenhum caminho válido encontrado até ao destino.")
+        
     salvar_resultados('DFS-backtracking',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
 
