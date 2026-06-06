@@ -175,17 +175,35 @@ def executar_busca_profundidade_backtracking():
         print("\nErro! Carregue um arquivo antes de executar o algoritmo.")
         return
     print("\n--- Executando Busca em Profundidade com Backtracking ---")
+
+    if ponto_inicial == ponto_final:
+        print("\nPonto inicial é o ponto final.")
+        return
     
-    fronteira = [(ponto_inicial, 0 , [ponto_inicial])] #tupla: (nó_atual, distancia_acumulada, caminho_ate_aqui)
+    fronteira = [] #tupla: (nó_atual, distancia_acumulada, caminho_ate_aqui)
     
     visitados = set()
     
     iteracao = 1
-    nos_expandidos = 0
+    nos_expandidos = 1
     nos_gerados = 1
     sucesso = False
     distancia_final = 0
     caminho_final = []
+
+    visitados.add(ponto_inicial)
+
+    vizinhos = grafo.get(ponto_inicial, {})
+
+    vizinhos_validos = [v for v in vizinhos.keys()]
+    vizinhos_validos.reverse()
+
+    for vizinho in vizinhos_validos:
+        aresta = vizinhos[vizinho]
+        caminho_inicial = [ponto_inicial, vizinho]
+
+        fronteira.append((vizinho, aresta, caminho_inicial))
+        nos_gerados += 1
 
     while fronteira:
         itens_lista = [f"({no}: {dist} + 0 = {dist})" for no, dist, _ in fronteira]
@@ -212,8 +230,8 @@ def executar_busca_profundidade_backtracking():
             vizinhos_validos.reverse()
 
             for vizinho in vizinhos_validos:
-                custo_aresta = vizinhos[vizinho]
-                nova_distancia = distancia + custo_aresta
+                aresta = vizinhos[vizinho]
+                nova_distancia = distancia + aresta
 
                 novo_caminho = list(caminho)
                 novo_caminho.append(vizinho)
