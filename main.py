@@ -92,20 +92,28 @@ def executar_a_estrela():
         return
     print("\n--- Executando A* ---")
 
+    if ponto_inicial == ponto_final:
+        print("Ponto inicial é o destino.")
+        return
+
     fronteira = []
     id = 0
-    g_inicial = 0
     nos_gerados = 1
-    h_inicial = heuristicas.get(ponto_inicial,0)
-    f_inicial = g_inicial + h_inicial
-    caminho_inicial = [ponto_inicial]
+    nos_expandidos = 1
+    melhor_g = {ponto_inicial : 0}
 
-    heapq.heappush(fronteira, (f_inicial, id, ponto_inicial, g_inicial,caminho_inicial))
+    for vizinho, aresta in grafo.get(ponto_inicial, {}).items():
+        g_vizinho = aresta
+        f_vizinho = g_vizinho + heuristicas.get(vizinho, 0)
+        melhor_g[vizinho] = g_vizinho
+
+        caminho_inicial = [ponto_inicial, vizinho]
+        id += 1
+        heapq.heappush(fronteira, (f_vizinho, id, vizinho, g_vizinho,caminho_inicial))
+        nos_gerados += 1
     
-    melhor_g = {ponto_inicial: g_inicial}
 
     iteracao = 1
-    nos_expandidos = 0
     sucesso = False
 
     while fronteira:
@@ -113,8 +121,9 @@ def executar_a_estrela():
         str_lista = " ".join(itens_lista)
 
         print(f"\nIteração {iteracao}:")
-        print(f"Lista: {str_lista}")
-        print(f"Medida de desempenho: {nos_expandidos}")
+        print(f"Pilha: {str_lista}")
+        print(f"Nós expandidos: {nos_expandidos}")
+        print(f"Nós gerados: {nos_gerados}")
 
         f_atual, _, atual, g_atual, caminho = heapq.heappop(fronteira)
         
@@ -127,8 +136,8 @@ def executar_a_estrela():
         vizinhos = grafo.get(atual, {})
         nos_expandidos += 1
 
-        for vizinho, custo_aresta in vizinhos.items():
-            novo_g = g_atual + custo_aresta
+        for vizinho, aresta in vizinhos.items():
+            novo_g = g_atual + aresta
 
             if vizinho not in melhor_g or novo_g < melhor_g[vizinho]:
                 melhor_g[vizinho] = novo_g
@@ -149,15 +158,12 @@ def executar_a_estrela():
     if sucesso:
         print(f"Distância: {g_atual}")
         print(f"Caminho: {' - '.join(caminho)}")
-        print(f"Quantidade de iterações: {iteracao}")
-        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
-        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
     else:
         print("Distância: Incompleta")
         print("Caminho: Nenhum caminho válido encontrado até o destino.")
-        print(f"Quantidade de iterações: {iteracao}")
-        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
-        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+
+    print(f"Nós Expandidos: {nos_expandidos}")
+    print(f"Nós gerados: {nos_gerados}")
     salvar_resultados('A_estrela',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
     
@@ -242,44 +248,63 @@ def executar_a_estrela_limitado():
         print("\nErro! Carregue um arquivo antes de executar o algoritmo.")
         return
     print("\n--- Executando A* Limitado---")
+    print("\nInício da execução")
+    print("Qual a distância máxima?")
 
     try:
-        limite = int(input("Digite a distância máxima viável (ex: 150): "))
+        limite = int(input())
     except ValueError:
-        print("\nValor inválido! Por favor, digite um número inteiro.")
+        print("\nPor favor, digite um número inteiro.")
+        return
+    
+    if ponto_inicial == ponto_final:
+        print("\nO ponto inicial é igual ao destino!")
         return
 
     fronteira = []
     id = 0
-    g_inicial = 0
     nos_gerados = 1
-    h_inicial = heuristicas.get(ponto_inicial,0)
-    f_inicial = g_inicial + h_inicial
+    nos_expandidos = 1
+    melhor_g = {ponto_inicial: 0}
 
-    if f_inicial > limite:
-        print(f"\nImpossível! A distância mínima estimada até o destino ({f_inicial}) já ultrapassa o seu limite ({limite}).")
-        return
+    for vizinho, aresta in grafo.get(ponto_inicial, {}).items():
+        g_vizinho = aresta
+        f_vizinho = g_vizinho + heuristicas.get(vizinho, 0)
+        melhor_g[vizinho] = g_vizinho
+        caminho_inicial = [ponto_inicial,vizinho]
+        id += 1
+        heapq.heappush(fronteira, (f_vizinho, id, vizinho, g_vizinho,caminho_inicial))
+        nos_gerados += 1
     
-    caminho_inicial = [ponto_inicial]
-    heapq.heappush(fronteira, (f_inicial, id, ponto_inicial, g_inicial,caminho_inicial))
     
-    melhor_g = {ponto_inicial: g_inicial}
     iteracao = 1
-    nos_expandidos = 0
     sucesso = False
 
     while fronteira:
-        itens_lista = [f"({no}: {g}+{heuristicas.get(no, 0)}={f})" for f, _, no,g, _ in sorted(fronteira)]
+        itens_lista = [f"({no}: {g} + {heuristicas.get(no, 0)} = {f})" for f, _, no,g, _ in sorted(fronteira)]
         str_lista = " ".join(itens_lista)
 
         print(f"\nIteração {iteracao}:")
         print(f"Lista: {str_lista}")
-        print(f"Medida de desempenho: {nos_expandidos}")
+        print(f"nós expandidos: {nos_expandidos}")
+        print(f"Nós gerados: {nos_gerados}")
 
         f_atual, _, atual, g_atual, caminho = heapq.heappop(fronteira)
+
+        if f_atual > limite:
+            print("Distância disponível 0 - caminho descartado\n")
+            iteracao += 1
+            continue
+        else:
+            if iteracao == 1:
+                print(f"Distância disponível: {limite}")
+            else:
+                distancia_disponivel = limite - g_atual
+                print(f"Distância disponível: {distancia_disponivel}")
         
 
         if atual == ponto_final:
+            nos_expandidos += 1
             sucesso = True
             break
 
@@ -287,12 +312,9 @@ def executar_a_estrela_limitado():
         vizinhos = grafo.get(atual, {})
         nos_expandidos += 1
 
-        for vizinho, custo_aresta in vizinhos.items():
-            novo_g = g_atual + custo_aresta
+        for vizinho, aresta in vizinhos.items():
+            novo_g = g_atual + aresta
             f_vizinho = novo_g + heuristicas.get(vizinho, 0)
-
-            if f_vizinho > limite:
-                continue
 
             if vizinho not in melhor_g or novo_g < melhor_g[vizinho]:
                 melhor_g[vizinho] = novo_g
@@ -312,15 +334,12 @@ def executar_a_estrela_limitado():
     if sucesso:
         print(f"Distância: {g_atual}")
         print(f"Caminho: {' - '.join(caminho)}")
-        print(f"Quantidade de iterações: {iteracao}")
-        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
-        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
     else:
         print("Distância: Incompleta")
         print("Caminho: Nenhum caminho válido encontrado até o destino.")
-        print(f"Quantidade de iterações: {iteracao}")
-        print(f"Medida de desempenho (Nós Expandidos): {nos_expandidos}")
-        print(f"Medida de desempenho (Nós Gerados): {nos_gerados}")
+
+    print(f"Nós expandidos: {nos_expandidos}")
+    print(f"Nós gerados: {nos_gerados}")
     salvar_resultados('A_estrela_limitado',iteracao, nos_expandidos, nos_gerados)
     print("="*30)
 
