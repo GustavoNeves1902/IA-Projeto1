@@ -1,0 +1,19 @@
+ponto_inicial(s).
+ponto_final(g).
+orientado(s).
+
+% --- AS CONEXÕES (CUSTO REAL G) ---
+pode_ir(s,a,3).
+pode_ir(s,b,2).
+pode_ir(a,g,9).  % A armadilha: O caminho direto para G é muito caro!
+pode_ir(a,c,2).
+pode_ir(b,c,4).
+pode_ir(b,g,8).
+pode_ir(c,g,3).
+
+% --- AS HEURÍSTICAS (OTIMISTAS H) ---
+h(s,g,7).
+h(a,g,4).
+h(b,g,6).
+h(c,g,2).
+h(g,g,0).

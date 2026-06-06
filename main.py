@@ -302,7 +302,7 @@ def executar_a_estrela_limitado():
         str_lista = " ".join(itens_lista)
 
         print(f"\nIteração {iteracao}:")
-        print(f"Lista: {str_lista}")
+        print(f"Pilha: {str_lista}")
         print(f"nós expandidos: {nos_expandidos}")
         print(f"Nós gerados: {nos_gerados}")
 
