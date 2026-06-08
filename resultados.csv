@@ -1,0 +1,9 @@
+Arquito .TXT;Algoritmo;Iterações;Nós Expandidos;Nós Gerados;Distância
+erro.txt;DFS-backtracking;4;4;4;0
+erro.txt;A_estrela;4;4;4;20
+teste5.txt;DFS-backtracking;6;6;7;40
+teste5.txt;A_estrela;2;2;4;40
+semresposta.txt;DFS-backtracking;5;4;5;0
+semresposta.txt;A_estrela;5;5;5;20
+teste_manual.txt;DFS-backtracking;2;2;5;12
+teste_manual.txt;A_estrela;4;4;6;8

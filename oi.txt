@@ -1,4 +1,4 @@
-ponto_inicial(a0). 
+ponto_inicial(a0).
 ponto_final(f0). 
 orientado(s). 
 %orientado(n). 
@@ -12,7 +12,6 @@ pode_ir(b0,f0,44).
 pode_ir(d0,c0,32).
 pode_ir(d0,e0,28).
 pode_ir(d0,f0,34).
-pode_ir(c0,f0,5).
 h(a0,f0,58). 
 h(b0,f0,24).
 h(c0,f0,34).

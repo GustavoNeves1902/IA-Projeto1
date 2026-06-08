@@ -10,7 +10,7 @@ ponto_final = None
 orientado = False
 nome_arquivo_atual = "vazio"
 
-def salvar_resultados(algoritmo, iteracoes, expandidos, gerados):
+def salvar_resultados(algoritmo, iteracoes, expandidos, gerados,distancia):
     global nome_arquivo_atual
     nome_csv = "resultados.csv"
     arquivo_existe = os.path.isfile(nome_csv)
@@ -19,9 +19,9 @@ def salvar_resultados(algoritmo, iteracoes, expandidos, gerados):
         escritor = csv.writer(arquivo,delimiter=';')
 
         if not arquivo_existe:
-            escritor.writerow(['Arquito .TXT', 'Algoritmo', 'Iterações', 'Nós Expandidos', 'Nós Gerados'])
+            escritor.writerow(['Arquito .TXT', 'Algoritmo', 'Iterações', 'Nós Expandidos', 'Nós Gerados','Distância'])
 
-        escritor.writerow([nome_arquivo_atual,algoritmo,iteracoes,expandidos,gerados])
+        escritor.writerow([nome_arquivo_atual,algoritmo,iteracoes,expandidos,gerados,distancia])
 
 def carregar_arquivo():
     global grafo, heuristicas, ponto_inicial, ponto_final, orientado,nome_arquivo_atual
@@ -164,7 +164,7 @@ def executar_a_estrela():
 
     print(f"Nós Expandidos: {nos_expandidos}")
     print(f"Nós gerados: {nos_gerados}")
-    salvar_resultados('A_estrela',iteracao, nos_expandidos, nos_gerados)
+    salvar_resultados('A_estrela',iteracao, nos_expandidos, nos_gerados, g_atual)
     print("="*30)
     
 
@@ -209,10 +209,10 @@ def executar_busca_profundidade_backtracking():
         itens_lista = [f"({no}: {dist} + 0 = {dist})" for no, dist, _ in fronteira]
         str_lista = " ".join(itens_lista)
 
-        print(f"\nIteração {iteracao}")
-        print(f"Pilha: {str_lista}")
-        print(f"Nós expandidos: {nos_expandidos}")
-        print(f"Nós gerados: {nos_gerados}")
+        #print(f"\nIteração {iteracao}")
+        #print(f"Pilha: {str_lista}")
+        #print(f"Nós expandidos: {nos_expandidos}")
+        #print(f"Nós gerados: {nos_gerados}")
 
         atual, distancia, caminho = fronteira.pop()
         
@@ -253,8 +253,9 @@ def executar_busca_profundidade_backtracking():
     else:
         print("Distância: Incompleta")
         print("Nenhum caminho válido encontrado até ao destino.")
+        distancia_final = 0
         
-    salvar_resultados('DFS-backtracking',iteracao, nos_expandidos, nos_gerados)
+    salvar_resultados('DFS-backtracking',iteracao, nos_expandidos, nos_gerados,distancia_final)
     print("="*30)
 
 
@@ -367,7 +368,7 @@ def executar_a_estrela_limitado():
 
     print(f"Nós expandidos: {nos_expandidos}")
     print(f"Nós gerados: {nos_gerados}")
-    salvar_resultados('A_estrela_limitado',iteracao, nos_expandidos, nos_gerados)
+    salvar_resultados('A_estrela_limitado',iteracao, nos_expandidos, nos_gerados, g_atual)
     print("="*30)
 
 
