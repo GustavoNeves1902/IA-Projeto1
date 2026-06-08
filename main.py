@@ -277,6 +277,19 @@ def executar_a_estrela_limitado():
     if ponto_inicial == ponto_final:
         print("\nO ponto inicial é igual ao destino!")
         return
+    
+    f_inicial = heuristicas.get(ponto_inicial, 0)
+    if f_inicial > limite:
+        print(f"\nA distância mínima em linha reta ({f_inicial}) do nó inicial até o destino já excede o limite ({limite}).")
+        print("\n" + "="*30)
+        print("Fim da execução")
+        print("Distância: Incompleta")
+        print("Caminho: Nenhum caminho válido encontrado até o destino.")
+        print("Nós expandidos: 0")
+        print("Nós gerados: 1")
+        salvar_resultados('A_estrela_limitado', 0, 0, 1)
+        print("="*30)
+        return
 
     fronteira = []
     id = 0
@@ -296,36 +309,32 @@ def executar_a_estrela_limitado():
     
     iteracao = 1
     sucesso = False
+    g_anterior = 0  
 
     while fronteira:
         itens_lista = [f"({no}: {g} + {heuristicas.get(no, 0)} = {f})" for f, _, no,g, _ in sorted(fronteira)]
         str_lista = " ".join(itens_lista)
 
+        
+        distancia_disponivel = limite - g_anterior
+
         print(f"\nIteração {iteracao}:")
         print(f"Pilha: {str_lista}")
         print(f"nós expandidos: {nos_expandidos}")
         print(f"Nós gerados: {nos_gerados}")
+        print(f"Distância disponível: {distancia_disponivel}")
 
         f_atual, _, atual, g_atual, caminho = heapq.heappop(fronteira)
 
         if f_atual > limite:
-            print("Distância disponível 0 - caminho descartado\n")
+            print("Caminho descartado (excede o limite)\n")
             iteracao += 1
             continue
-        else:
-            if iteracao == 1:
-                print(f"Distância disponível: {limite}")
-            else:
-                distancia_disponivel = limite - g_atual
-                print(f"Distância disponível: {distancia_disponivel}")
-        
 
         if atual == ponto_final:
-            nos_expandidos += 1
             sucesso = True
             break
 
-        
         vizinhos = grafo.get(atual, {})
         nos_expandidos += 1
 
@@ -343,6 +352,7 @@ def executar_a_estrela_limitado():
                 heapq.heappush(fronteira, (f_vizinho, id,vizinho, novo_g, novo_caminho))
                 nos_gerados += 1
 
+        g_anterior = g_atual
         iteracao += 1
     
 
